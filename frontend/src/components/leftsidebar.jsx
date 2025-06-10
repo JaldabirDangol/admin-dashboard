@@ -4,61 +4,75 @@ import { IoMdPeople } from "react-icons/io";
 import { RiBarChartFill } from "react-icons/ri";
 import { FaChartPie } from "react-icons/fa";
 import { GiWorld } from "react-icons/gi";
-
-
+import { useNavigate } from 'react-router-dom';
 
 import {
   Avatar,
   AvatarFallback,
   AvatarImage,
 } from "../components/ui/avatar.jsx";
+import { useState } from "react";
 
 export const LeftSideBar = () => {
+  const navigate = useNavigate();
+  const [selectedItem, setSelecteditem] = useState("overview");
   const sideBarItems = [
-    {
-      logo: <CiGrid42 size={24}  className="text-white"/>,
-      title: "Overview",
-    },
-    {
-      logo: <IoMdPeople size={24} className="text-white"/>,
-      title: "Customers",
-    },
-    {
-      logo: <RiBarChartFill  size={24} className="text-white"/>,
-      title: "Bar chart",
-    },
   {
-      logo: <FaChartPie  size={24} className="text-white"/>,
-      title: "Pie chart",
-    },
- {
-      logo: <GiWorld   size={24} className="text-white"/>,
-      title: "Bar chart",
-    },
-    {
-      logo: <CiSettings size={24} className="text-white"/>,
-      title: "Setting",
-    },
-  ];
+    logo: <CiGrid42 size={24} className="text-white" />,
+    title: "Overview",
+    path: "/overview",
+  },
+  {
+    logo: <IoMdPeople size={24} className="text-white" />,
+    title: "Customers",
+    path: "/customers",
+  },
+  {
+    logo: <RiBarChartFill size={24} className="text-white" />,
+    title: "Bar chart",
+    path: "/bar-chart",
+  },
+  {
+    logo: <FaChartPie size={24} className="text-white" />,
+    title: "Pie chart",
+    path: "/pie-chart",
+  },
+  {
+    logo: <GiWorld size={24} className="text-white" />,
+    title: "World Map",
+    path: "/world-map",
+  },
+  {
+    logo: <CiSettings size={24} className="text-white" />,
+    title: "Settings",
+    path: "/settings",
+  },
+];
+
+ const handleSidebarItemClick = (item) => {
+  navigate(item.path);
+  setSelecteditem(item.title)
+};
 
   const user = {
     name:"jaldabir"
   }
   return (
     <div className="h-screen bg-darkblue-400 p-2">
-      <div className="flex pt-5 p-4 items-center" >
+      <div className="flex pt-5 p-2 md:p-4 items-center" >
         <Avatar>
           <AvatarImage src={user?.profile}/>
           <AvatarFallback> profile</AvatarFallback>
         </Avatar>
-         <span className="text-gray-100 pl-4 text-2xl"> {user?.name}</span>
+         <span className="text-gray-100 pl-4 text-2xl hidden md:block"> {user?.name}</span>
       </div>
 
-      <div className="flex flex-col gap-4 p-4">
+      <div className="flex flex-col gap-4 md:p-4">
         {sideBarItems.map((item, index) => (
-          <div key={index} className="flex items-center gap-2">
+          <div onClick={() => handleSidebarItemClick(item)} key={index}
+           className={`md:flex sm:pl-2 items-center gap-2 ${selectedItem === item.title ? 'bg-dark-400 text-white' : 'hover:bg-dark-800 text-gray-200 rounded-2xl p-2'   }`}>
             {item.logo}
-            <span className="text-gray-200">{item.title}</span>
+            <span className="text-gray-200 hidden md:block">{item.title}</span>
           </div>
         ))}
       </div>

@@ -4,6 +4,7 @@ import {
   Bar,
   XAxis,
   YAxis,
+  ResponsiveContainer,
   PieChart,
   Pie,
   Tooltip,
@@ -15,26 +16,27 @@ export const SalesOverview = ({ title, data1, data2, data3, data4 ,data5 }) => {
   const data = [
     { name: "Shoes", value: Number(data1) },
     { name: "Clothing", value: Number(data2) },
-    { name: "Sportswear", value: Number(data3) },
+    { name: "Sports", value: Number(data3) },
     { name: "Shorts", value: Number(data4) },
   ];
   return (
-    <div className="cols-span-2 bg-darkblue-400 ">
+    <div className="cols-span-2 bg-darkblue-400 h-100 rounded-lg w-full">
       <div className="flex justify-between p-2">
-        <span className="text-gray-200">{title}</span>
+        <span className="text-gray-200 text-xl">{title}</span>
         <HiOutlineDotsVertical className="text-white" />
       </div>
    
-      <div className="flex justify-between">
-        <PieChart width={300} height={300}>
+      <div className="flex justify-between w-full">
+       <div className="w-full h-[300px] hidden md:block"> 
+      <ResponsiveContainer width="100%" height="100%">
+        <PieChart>
           <Pie
             data={data}
             cx="50%"
             cy="50%"
-            outerRadius={90}
-            fill="#8884d8"
+            outerRadius="80%"
             dataKey="value"
-            label
+            label 
           >
             {data.map((entry, index) => (
               <Cell
@@ -45,11 +47,12 @@ export const SalesOverview = ({ title, data1, data2, data3, data4 ,data5 }) => {
           </Pie>
           <Tooltip />
         </PieChart>
-
+      </ResponsiveContainer>
+    </div>
           <div className="flex flex-col">
-              <div className="pr-20">
+              <div className="pr-8 pl-2">
           <span className="text-gray-300 "> Number of sales </span>
-          <p className="text-gray-300  text-xl"> ${data5}</p>
+          <p className="text-gray-300  text-xl"> {data5} items</p>
               </div>
 
   <div className="grid grid-cols-2 gap-y-4 text-white text-sm pt-16 pr-6" >
@@ -73,7 +76,7 @@ export const SalesOverview = ({ title, data1, data2, data3, data4 ,data5 }) => {
   <div className="flex items-center gap-2">
     <span className="w-4 h-4 rounded-full bg-green-500"></span>
     <div>
-      <p>Sportswear</p>
+      <p>Sports</p>
       <p className="text-gray-400">$15,100</p>
     </div>
   </div>
@@ -88,9 +91,15 @@ export const SalesOverview = ({ title, data1, data2, data3, data4 ,data5 }) => {
 </div>
 
           </div>
-
-
       </div>
+
+        <div className="pl-4">
+            <span className="text-gray-200 text-xl">
+             Total revenue in 30 days is  ${`87,233`}
+            </span>
+          </div>
+
+
     </div>
   );
 };
