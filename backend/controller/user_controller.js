@@ -21,7 +21,6 @@ export const register = async(req,res)=>{
             username,
             password:hashedPassword,
             email,
-            role
         }) 
      
         return res.status(201).json({
