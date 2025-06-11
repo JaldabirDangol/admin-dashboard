@@ -6,7 +6,7 @@ const JWT_SECRET = process.env.JWT_SECRET;
 export const authMiddleware = (req, res, next) => {
   try {
     const JWT_SECRET = process.env.JWT_SECRET;
-    const loginCookie = req.cookies.loginCookie;
+    const loginCookie = req.cookies.logincookie;
     if(!loginCookie){
         return res.status(401).json({
             message:'user not Authenticated',
@@ -20,7 +20,7 @@ export const authMiddleware = (req, res, next) => {
                 success:false
             })
     }
-    req.id = decode.userId;
+    req.id = decode.id;
     next();
 
   } catch (err) {
@@ -33,8 +33,9 @@ export const isAdmin = async (req,res,next)=>{
     try {
         const userId = req.id;
         const user = await User.findById(userId)
-
-        const isAdmin = user.role === 'admin' ? 'admin' || 'superAdmin' : 'user';
+         
+        if(!user) return res.status(400).json({msg:"user doesnot exists",success:false})
+        const isAdmin = user.role === 'user' ? false : true;
 
         if(!isAdmin){
             return res.status(400).json({

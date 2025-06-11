@@ -6,14 +6,15 @@ import { FaChartPie } from "react-icons/fa";
 import { GiWorld } from "react-icons/gi";
 import { useNavigate } from 'react-router-dom';
 import { AiOutlineLogout } from "react-icons/ai";
-
-
 import {
   Avatar,
   AvatarFallback,
   AvatarImage,
 } from "../components/ui/avatar.jsx";
 import { useState } from "react";
+import axios from "axios";
+import { backendurl } from "../../configurl.js";
+import { Toaster, toast } from 'sonner';
 
 export const LeftSideBar = () => {
   const navigate = useNavigate();
@@ -56,22 +57,36 @@ export const LeftSideBar = () => {
   }
 ];
 
- const handleSidebarItemClick = (item) => {
+const randomNames = ["Alice", "Bob", "Charlie", "Daisy", "Eve", "Frank", "Grace"];
+const randomName = randomNames[Math.floor(Math.random() * randomNames.length)];
+ 
+ const handleSidebarItemClick = async(item) => {
   navigate(item.path);
   setSelecteditem(item.title)
+  if(item.path === '/auth'){
+    try {
+       const res = await axios.get(`${backendurl}/api/v1/user/logout`,{
+        withCredentials:true,
+       })
+    if(res.data.success){
+      console.log("logout success")
+      toast(res.data.msg)
+    }
+    } catch (error) {
+      console.log(error)
+    }
+  }
 };
 
-  const user = {
-    name:"jaldabir"
-  }
+ 
   return (
     <div className="h-screen p-2 fixed overflow-y-auto scrollbar-hide bg-darkblue-400  w-[15%] ">
       <div className="flex pt-5 p-2 md:p-4 items-center" >
         <Avatar>
-          <AvatarImage src={user?.profile}/>
+          <AvatarImage src="https://i.pravatar.cc/40"/>
           <AvatarFallback> profile</AvatarFallback>
         </Avatar>
-         <span className="text-gray-100 pl-4 text-2xl hidden md:block"> {user?.name}</span>
+         <span className="text-gray-100 pl-4 text-2xl hidden md:block"> {randomName}</span>
       </div>
 
       <div className="flex flex-col gap-4 md:p-4">
