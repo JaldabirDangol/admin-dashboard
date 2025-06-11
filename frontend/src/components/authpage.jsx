@@ -8,6 +8,7 @@ export default function AuthPage() {
   const [isLogin, setIsLogin] = useState(true);
   const [loading, setLoading] = useState(false);
   const [userinfo, setUserInfo] = useState({
+    username:"",
     email: "",
     password: "",
   });
@@ -23,7 +24,7 @@ export default function AuthPage() {
     setLoading(true);
     try {
       const res = await axios.post(
-        `${backendurl}/api/v1/user/login`,
+        `${backendurl}/api/v1/user/${isLogin ? 'login' :'register'}`,
         userinfo,
         {
           headers: {
@@ -33,13 +34,17 @@ export default function AuthPage() {
         }
       );
       if (res.data.success) {
-        toast.success(res.data.message || "Logged in successfully!");
-        setUserInfo({ email: "", password: "" });
-        navigate("/");
+        toast.success(res.data.msg);
+        setUserInfo({ email: "", password: "" ,username:""});
+        if(isLogin){
+            navigate("/");
+        }else{
+           setIsLogin(true)
+        }
       }
     } catch (error) {
       toast.error(
-        error?.response?.data?.message || "Something went wrong. Try again."
+        error?.response?.data?.msg || "Something went wrong. Try again."
       );
       console.error(error);
     } finally {
@@ -49,7 +54,7 @@ export default function AuthPage() {
 
 
   return (
-    <div className="min-h-screen flex items-center justify-center bg-[#1e1e3f] px-4">
+    <div className="min-h-screen w-full flex items-center justify-center bg-[#1e1e3f] px-4">
       <div className="bg-[#2c2c54] w-full max-w-md p-8 rounded-2xl shadow-xl text-white">
         <ToastContainer />
         <h2 className="text-2xl font-semibold mb-6 text-center">

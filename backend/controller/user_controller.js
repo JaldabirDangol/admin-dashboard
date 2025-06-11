@@ -11,7 +11,8 @@ export const register = async(req,res)=>{
         const existingUser = await User.findOne({email});
         if(existingUser){
             return res.status(400).json({
-                msg:'User already exists'
+                msg:'User already exists',
+                success:false
             })
         }
 
@@ -22,8 +23,10 @@ export const register = async(req,res)=>{
             password:hashedPassword,
             email,
         }) 
+        console.log(newUser)
      
         return res.status(201).json({
+            success:true,
             msg:"user Created",
             user:newUser
         })
@@ -40,7 +43,7 @@ export const loginUser = async(req,res)=>{
         const JWT_SECRET = process.env.JWT_SECRET;
 
         if(!user) return res.status(400).json({msg:"user doesnot exists"});
-
+         
         const isMatch = await bcrypt.compare(password,user.password);
         if(!isMatch) return res.status(400).json({msg:"Invalid Credentials"});
 
@@ -48,14 +51,16 @@ export const loginUser = async(req,res)=>{
             id:user._id,
             role:user.role
         },JWT_SECRET)
-
+        
         res.status(200).json({
+      success:true,
       token,
       user: {
         id: user._id,
         username: user.username,
         email: user.email,
-        role: user.role
+        role: user.role,
+        msg:"login successfully"
       }
     }); 
 

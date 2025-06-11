@@ -52,7 +52,7 @@ export const LeftSideBar = () => {
     {
     logo: <AiOutlineLogout  size={24} className="text-white" />,
     title: "Log Out",
-    path: "/login",
+    path: "/auth",
   }
 ];
 
