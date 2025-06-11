@@ -5,6 +5,8 @@ import { RiBarChartFill } from "react-icons/ri";
 import { FaChartPie } from "react-icons/fa";
 import { GiWorld } from "react-icons/gi";
 import { useNavigate } from 'react-router-dom';
+import { AiOutlineLogout } from "react-icons/ai";
+
 
 import {
   Avatar,
@@ -47,6 +49,11 @@ export const LeftSideBar = () => {
     title: "Settings",
     path: "/settings",
   },
+    {
+    logo: <AiOutlineLogout  size={24} className="text-white" />,
+    title: "Log Out",
+    path: "/login",
+  }
 ];
 
  const handleSidebarItemClick = (item) => {
@@ -58,7 +65,7 @@ export const LeftSideBar = () => {
     name:"jaldabir"
   }
   return (
-    <div className="h-screen bg-darkblue-400 p-2">
+    <div className="h-screen p-2 fixed overflow-y-auto scrollbar-hide bg-darkblue-400  w-[15%] ">
       <div className="flex pt-5 p-2 md:p-4 items-center" >
         <Avatar>
           <AvatarImage src={user?.profile}/>
@@ -70,7 +77,7 @@ export const LeftSideBar = () => {
       <div className="flex flex-col gap-4 md:p-4">
         {sideBarItems.map((item, index) => (
           <div onClick={() => handleSidebarItemClick(item)} key={index}
-           className={`md:flex sm:pl-2 items-center gap-2 ${selectedItem === item.title ? 'bg-dark-400 text-white' : 'hover:bg-dark-800 text-gray-200 rounded-2xl p-2'   }`}>
+           className={`md:flex sm:pl-2 items-center gap-2 ${selectedItem === item.title ? 'bg-dark-400 text-white cursor-pointer' : 'hover:bg-dark-800 text-gray-200 rounded-2xl p-2 cursor-pointer'   }`}>
             {item.logo}
             <span className="text-gray-200 hidden md:block">{item.title}</span>
           </div>

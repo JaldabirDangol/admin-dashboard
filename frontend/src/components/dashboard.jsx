@@ -1,15 +1,18 @@
 import StartBox from './startBox'
-import reactlogo from "../assets/react.svg"
 import { Input } from "@/components/ui/input"
 import { FaSearch } from "react-icons/fa";
 import { SalesOverview } from './salesoverview';
 import { HiOutlineDotsVertical } from "react-icons/hi";
 import {LineChart,Line,XAxis,YAxis,CartesianGrid,Tooltip,Legend, ResponsiveContainer,
 } from "recharts";
-
+import OrdersTable from './ordertable';
+import { TbMoneybag } from "react-icons/tb";
+import { AiOutlineTransaction } from "react-icons/ai";
+import { IoPeopleSharp } from "react-icons/io5";
+import { IoBagCheck } from "react-icons/io5";
+import { HiOutlineChartBar } from "react-icons/hi";
 
 export const Dashboard = () => {
- 
 const data = [
   { name: "Jan", sales: 4000 },
   { name: "Feb", sales: 3000 },
@@ -19,7 +22,7 @@ const data = [
   { name: "Jun", sales: 4490 },
 ];
   return (
-   <div className='w-full h-full flex flex-col p-4 '>
+   <div className='w-full h-full flex flex-col p-4'>
 
      <div className="flex  items-center p-2 pb-4">
      <p className="text-gray-200 mr-8">Dashboard</p>
@@ -36,15 +39,14 @@ const data = [
   </div>
 </div>
 
-
-
      <div className='grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-4  row-start-[auto] mb-8'>
-          <StartBox logo={reactlogo} date="7 days" value="$10,2340" title="Total Revenue" profit={10}/>
-        <StartBox logo={reactlogo} date="7 days" value="1000" title="Total Transaction" profit={23}/> 
-          <StartBox logo={reactlogo} date="7 days" value="60%" title="Quaterly Income" profit={34}/>
-          <StartBox logo={reactlogo} date="7 days" value="21200" title="New Orders" profit={25}/>
+          <StartBox logo={<TbMoneybag className='w-8 h-8 text-orange-400'/>} date="7 days" value="$10,2340" title="Total Revenue" profit={10}/>
+        <StartBox logo={<AiOutlineTransaction className='w-8 h-8 text-green-400' />
+} date="7 days" value="1000" title="Total Transaction" profit={23}/> 
+          <StartBox logo={<HiOutlineChartBar className='w-8 h-8 text-green-400'/>} date="7 days" value="60%" title="Quaterly Income" profit={34}/>
+          <StartBox logo={<IoBagCheck  className='w-8 h-8 text-yellow-400'/>
+} date="7 days" value="21200" title="New Orders" profit={25}/>
         </div>
-
 
        <div className="flex">
          <div className='mr-6 w-full '>
@@ -59,10 +61,11 @@ const data = [
          </div>
 
          <div className='flex flex-col w-full '>
-
       <div className='grid grid-cols-1 gap-4 mb-4 sm:grid-cols-1 md:grid-cols-2'>
-        <StartBox logo={reactlogo} date="week" value="699" title="New Customers" profit={36}/>
-      <StartBox logo={reactlogo} date="week" value="$69,999" title="Total Profit" profit={16}/>
+        <StartBox logo={<IoPeopleSharp 
+ className='w-8 h-8 text-gray-300'/>
+} date="week" value="699" title="New Customers" profit={36}/>
+      <StartBox logo={<TbMoneybag className='w-8 h-8 text-green-400'/>} date="week" value="$69,999" title="Total Profit" profit={16}/>
       </div>
 
       
@@ -93,9 +96,9 @@ const data = [
         </div>
       
 </div>
-
          </div>
   </div>
+  <OrdersTable/>
    </div>
   )
 }

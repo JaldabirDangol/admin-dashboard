@@ -20,7 +20,7 @@ export const SalesOverview = ({ title, data1, data2, data3, data4 ,data5 }) => {
     { name: "Shorts", value: Number(data4) },
   ];
   return (
-    <div className="cols-span-2 bg-darkblue-400 h-100 rounded-lg w-full">
+    <div className="cols-span-2 bg-darkblue-400 md:h-100 max-h-135 rounded-lg w-full">
       <div className="flex justify-between p-2">
         <span className="text-gray-200 text-xl">{title}</span>
         <HiOutlineDotsVertical className="text-white" />

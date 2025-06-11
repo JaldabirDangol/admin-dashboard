@@ -1,11 +1,12 @@
 import { FaArrowTrendUp } from "react-icons/fa6";
+import { TbMoneybag } from "react-icons/tb";
 
 function StartBox({logo,title,value,date,profit}){
 
     return(
         <div className="bg-darkblue-400 rounded-lg p-2 max-h-30">
             <div className="flex justify-between items-center mb-2">
-                   <img src={logo} alt="logo" className="h-8 w-8"/>
+                    <span>{logo}</span>
                    <h3 className="text-gray-300">{title}</h3> 
              </div>
              <div className="flex justify-between">
