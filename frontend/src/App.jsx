@@ -12,7 +12,7 @@ function App() {
       <div className={`h-screen  w-[15%]  ${location.pathname === '/auth' ? 'hidden ':'block'}`}>
         <LeftSideBar/>
       </div>
-      <main className={`bg-dark-700 h-full p-4 md:pr-5 overflow-y-auto scrollbar-hide ${location.pathname === '/auth' ? 'w-full ':'w-[85%]'}}`}>
+      <main className={`bg-dark-700 h-full p-1 md:p-4 md:pr-5 overflow-y-auto scrollbar-hide ${location.pathname === '/auth' ? 'w-full ':'w-[85%]'}`}>
      <Routes>
           <Route path="/" element={<Dashboard />} />
           <Route path="/overview" element={<Dashboard />} />

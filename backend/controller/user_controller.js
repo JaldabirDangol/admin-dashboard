@@ -94,49 +94,84 @@ export const allUser = async(req,res)=>{
     }
 }
 
-export const changeRole = async(req,res)=>{
-    try{
+export const changeRole = async (req, res) => {
+    try {
         const userId = req.id;
-        const user = User.findById(userId);
+        const user = await User.findById(userId);
         const targetUserId = req.params.id;
-        const targetUser = User.findById(targetUserId);
-        const { newRole} = req.body;
+        const targetUser = await User.findById(targetUserId);
+        const { newRole } = req.body;
 
-       const roles = {
-       user: 1,
-       admin: 2,
-       superadmin: 3
-      };
+        const roles = {
+            user: 1,
+            admin: 2,
+            superAdmin: 3
+        };
 
-        if(!user){
+        if (!user) {
             return res.status(400).json({
-                msg:"user doesnot exist",
-                success:false
-            })
+                msg: "Requesting user does not exist.",
+                success: false
+            });
         }
 
-        if(!user.role === "admin " || "superAdmin"){
-            return res.status(400).json({
-                msg:"you are not authorized for this activity",
-                success:false
-            })
+        if (!targetUser) {
+            return res.status(404).json({
+                msg: "Target user does not exist.",
+                success: false
+            });
         }
-       
-     if(!roles[user.role]>roles[targetUser.role]){
-          return res.status(400).json({
-                msg:"you are not authorized for this activity",
-                success:false
-          })
-     }
-        
-     targetUser.role = newRole;
 
-    return res.status(200).json({
-        msg:"role changed succesfully ",
-        success:false
-    })
+        if (userId === targetUserId) {
+            return res.status(400).json({
+                msg: "You cannot change your own role.",
+                success: false
+            });
+        }
 
-    }catch(error){
-        console.log(error)
+        if (user.role !== "admin" && user.role !== "superAdmin") {
+            return res.status(403).json({
+                msg: "You are not authorized to change roles.",
+                success: false
+            });
+        }
+
+        if (user.role === "admin") {
+            if (!(targetUser.role === "user" && newRole === "admin")) {
+                return res.status(403).json({
+                    msg: "Admins can only promote users to admin.",
+                    success: false
+                });
+            }
+        }
+
+          if (roles[newRole] < roles[targetUser.role] && user.role !== "superAdmin") {
+            return res.status(403).json({
+                msg: "Only superAdmins can demote users.",
+                success: false
+            });
+        }
+
+        if (!(roles[user.role] >= roles[newRole])) {
+            return res.status(400).json({
+                msg: "You are not authorized to assign this role.",
+                success: false
+            });
+        }
+
+        targetUser.role = newRole;
+        await targetUser.save();
+
+        return res.status(200).json({
+            msg: `Role changed to ${newRole} successfully!`,
+            success: true
+        });
+
+    } catch (error) {
+        console.log(error);
+        return res.status(500).json({
+            msg: "Internal server error.",
+            success: false
+        });
     }
-}
+};

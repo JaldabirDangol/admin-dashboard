@@ -22,7 +22,7 @@ const data = [
   { name: "Jun", sales: 4490 },
 ];
   return (
-   <div className='w-full h-full flex flex-col p-4'>
+   <div className='w-full h-full flex flex-col p-2 md:p-4'>
 
      <div className="flex  items-center p-2 pb-4">
      <p className="text-gray-200 mr-8">Dashboard</p>
