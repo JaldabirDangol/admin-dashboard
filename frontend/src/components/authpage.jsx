@@ -1,4 +1,4 @@
-import React, { useState} from "react";
+import React, { useState ,useEffect} from "react";
 import { toast, ToastContainer } from "react-toastify";
 import axios from "axios";
 import { useNavigate } from 'react-router-dom';
@@ -7,6 +7,7 @@ import { backendurl} from "../../configurl";
 export default function AuthPage() {
   const [isLogin, setIsLogin] = useState(true);
   const [loading, setLoading] = useState(false);
+  const [user,setUser] = useState(null)
   const [userinfo, setUserInfo] = useState({
     username:"",
     email: "",
@@ -36,8 +37,11 @@ export default function AuthPage() {
       if (res.data.success) {
         toast.success(res.data.msg);
         setUserInfo({ email: "", password: "" ,username:""});
+ 
+
+        setUser(res.data.user ? res.data.user : false)
         if(isLogin){
-            navigate("/");
+            navigate(res.data.user.role === "user" ? "/userpage" : "/" );
         }else{
            setIsLogin(true)
         }
@@ -51,7 +55,7 @@ export default function AuthPage() {
       setLoading(false);
     }
   };
-
+   
 
   return (
     <div className="min-h-screen w-full flex items-center justify-center bg-[#1e1e3f] px-4">

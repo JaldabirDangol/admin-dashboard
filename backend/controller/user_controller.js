@@ -175,3 +175,31 @@ export const changeRole = async (req, res) => {
         });
     }
 };
+
+export const amILogin = async(req,res)=>{
+    try {
+        const userId = await req.id;
+        const user = await User.findById(userId);
+
+        console.log("reacasdasami login")
+        if(!userId){
+            return res.status(400).json({
+                msg:'userID not found',
+                success:false
+            })
+        }
+          if(!user){
+            return res.status(400).json({
+                msg:'user not found',
+                success:false
+            })
+        }
+        return res.status(200).json({
+            msg:"user is logged in ",
+            success:true,
+            user:user
+        })
+    } catch (error) {
+        console.log(error)
+    }
+}
