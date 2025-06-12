@@ -3,11 +3,13 @@ import { toast, ToastContainer } from "react-toastify";
 import axios from "axios";
 import { useNavigate } from 'react-router-dom';
 import { backendurl} from "../../configurl";
+import { useGetMe } from "../hooks/useGetMe";
 
 export default function AuthPage() {
   const [isLogin, setIsLogin] = useState(true);
   const [loading, setLoading] = useState(false);
-  const [user,setUser] = useState(null)
+  const [user,setUser] = useState(null);
+  const { loading1 , user1 } = useGetMe()
   const [userinfo, setUserInfo] = useState({
     username:"",
     email: "",
@@ -38,12 +40,11 @@ export default function AuthPage() {
         toast.success(res.data.msg);
         setUserInfo({ email: "", password: "" ,username:""});
  
-
         setUser(res.data.user ? res.data.user : false)
         if(isLogin){
-            navigate(res.data.user.role === "user" ? "/userpage" : "/" );
+          navigate(res.data.user.role === "user" ? "/userpage" : "/" );
         }else{
-           setIsLogin(true)
+          setIsLogin(true)
         }
       }
     } catch (error) {
@@ -55,7 +56,12 @@ export default function AuthPage() {
       setLoading(false);
     }
   };
-   
+
+  useEffect(()=>{
+    if(!loading1 && user1){
+      navigate('/')
+    }
+  },[navigate,user1,loading1])
 
   return (
     <div className="min-h-screen w-full flex items-center justify-center bg-[#1e1e3f] px-4">

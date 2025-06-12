@@ -1,13 +1,15 @@
 import axios from "axios"
 import { backendurl } from "../../configurl"
-import { useEffect } from "react"
+import { useEffect, useState } from "react"
 
 
-export const useGetMe =({user,setUser})=>{
+export const useGetMe =()=>{
+    const[user1,setUser] = useState(null);
+    const [loading1 ,setLoading] = useState(true)
     
     useEffect(()=>{
        async function fetchMe(){
-           console.log("hooks called")
+          
             try {
         const res = await axios.get(`${backendurl}/api/v1/user/amilogin`,{
             withCredentials:true
@@ -20,9 +22,13 @@ export const useGetMe =({user,setUser})=>{
         }
     } catch (error) {
         console.log(error)
-    }}
+        setUser(null)
+    }
+finally{
+    setLoading(false)
+}}
 
     fetchMe()
     },[])
-
+  return { user1, loading1}
 }
