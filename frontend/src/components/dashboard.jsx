@@ -11,16 +11,56 @@ import { AiOutlineTransaction } from "react-icons/ai";
 import { IoPeopleSharp } from "react-icons/io5";
 import { IoBagCheck } from "react-icons/io5";
 import { HiOutlineChartBar } from "react-icons/hi";
+import axios from "axios"
+import {backendurl} from "../../configurl.js"
+import { useState } from 'react';
+import { useEffect } from 'react';
 
 export const Dashboard = () => {
-const data = [
-  { name: "Jan", sales: 4000 },
-  { name: "Feb", sales: 3000 },
-  { name: "Mar", sales: 5000 },
-  { name: "Apr", sales: 2780 },
-  { name: "May", sales: 3890 },
-  { name: "Jun", sales: 4490 },
-];
+  const [dashboardData, setDashboardData] = useState(null);
+  const [loading, setLoading] = useState(true); 
+  const [error, setError] = useState(null);    
+
+  
+ 
+
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        const res = await axios.get(`${backendurl}/api/v1/data/dashboard`,{
+          withCredentials:true
+        });
+        if (res.data.success) {
+          setDashboardData(res.data.dashboardData);
+        } else {
+          setError('Failed to load dashboard data.');
+        }
+      } catch (err) {
+        setError('Error fetching dashboard data.');
+        console.error(err);
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchData();
+  }, []); 
+
+  
+  const months = ["Jan", "Feb", "Mar", "Apr", "May", "Jun"];
+const monthlySales = dashboardData?.sixMonthSale
+  ? months.map((month, idx) => ({
+      name: month,
+      sales: dashboardData.sixMonthSale[idx]
+    }))
+  : [];
+
+const data = monthlySales;
+
+
+  if (loading) return <div>Loading...</div>;
+   if (error) return <div>{error}</div>;
+  
   return (
    <div className='w-full h-full flex flex-col p-2 md:p-4'>
 
@@ -40,32 +80,62 @@ const data = [
 </div>
 
      <div className='grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-4  row-start-[auto] mb-8'>
-          <StartBox logo={<TbMoneybag className='w-8 h-8 text-orange-400'/>} date="7 days" value="$10,2340" title="Total Revenue" profit={10}/>
-        <StartBox logo={<AiOutlineTransaction className='w-8 h-8 text-green-400' />
-} date="7 days" value="1000" title="Total Transaction" profit={23}/> 
-          <StartBox logo={<HiOutlineChartBar className='w-8 h-8 text-green-400'/>} date="7 days" value="60%" title="Quaterly Income" profit={34}/>
-          <StartBox logo={<IoBagCheck  className='w-8 h-8 text-yellow-400'/>
-} date="7 days" value="21200" title="New Orders" profit={25}/>
+          <StartBox logo={<TbMoneybag className='w-8 h-8 text-orange-400'/>} date="7 days" value={dashboardData.totalRevenue.amount} title="Total Revenue" profit={dashboardData.totalRevenue.changePercent}/>
+          <StartBox 
+    logo={<AiOutlineTransaction className='w-8 h-8 text-green-400' />} 
+    date="7 days" 
+    value={dashboardData.totalTransaction.count} 
+    title="Total Transaction" 
+    profit={dashboardData.totalTransaction.changePercent} 
+  />
+
+  <StartBox 
+    logo={<HiOutlineChartBar className='w-8 h-8 text-green-400' />} 
+    date="7 days" 
+    value={`${dashboardData.quarterlyIncome.incomePercent}%`} 
+    title="Quarterly Income" 
+    profit={dashboardData.quarterlyIncome.changePercent} 
+  />
+
+  <StartBox 
+    logo={<IoBagCheck className='w-8 h-8 text-yellow-400' />} 
+    date="7 days" 
+    value={dashboardData.newOrders.count} 
+    title="New Orders" 
+    profit={dashboardData.newOrders.changePercent} 
+  />
         </div>
 
        <div className="flex">
          <div className='mr-6 w-full '>
             <SalesOverview
       title="Sales Overview"
-      data1="40000"
-      data2="43433"
-      data3="33232"
-      data4="4322"
-      data5="43,434"
+       data1={dashboardData.salesOverview.sales[0]} 
+  data2={dashboardData.salesOverview.sales[1]} 
+  data3={dashboardData.salesOverview.sales[2]} 
+  data4={dashboardData.salesOverview.sales[3]} 
+  data5={dashboardData.salesOverview.totalItems.toLocaleString()}
+  totalRevenue30Days={dashboardData.salesOverview.totalRevenue30Days}
         />
          </div>
 
          <div className='flex flex-col w-full '>
       <div className='grid grid-cols-1 gap-4 mb-4 sm:grid-cols-1 md:grid-cols-2'>
-        <StartBox logo={<IoPeopleSharp 
- className='w-8 h-8 text-gray-300'/>
-} date="week" value="699" title="New Customers" profit={36}/>
-      <StartBox logo={<TbMoneybag className='w-8 h-8 text-green-400'/>} date="week" value="$69,999" title="Total Profit" profit={16}/>
+         <StartBox 
+    logo={<IoPeopleSharp className='w-8 h-8 text-gray-300' />} 
+    date="week" 
+    value={dashboardData.newCustomers.count} 
+    title="New Customers" 
+    profit={dashboardData.newCustomers.changePercent} 
+  />
+
+  <StartBox 
+    logo={<TbMoneybag className='w-8 h-8 text-green-400' />} 
+    date="week" 
+    value={`$${dashboardData.totalProfit.amount.toLocaleString()}`} 
+    title="Total Profit" 
+    profit={dashboardData.totalProfit.changePercent} 
+  />
       </div>
 
       

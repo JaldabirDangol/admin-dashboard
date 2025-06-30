@@ -1,5 +1,4 @@
-import { FaArrowTrendUp } from "react-icons/fa6";
-import { TbMoneybag } from "react-icons/tb";
+import { FaArrowTrendUp  ,FaArrowTrendDown} from "react-icons/fa6";
 
 function StartBox({logo,title,value,date,profit}){
 
@@ -12,8 +11,16 @@ function StartBox({logo,title,value,date,profit}){
              <div className="flex justify-between">
                    <h2 className="text-gray-100">{value}</h2> 
                   <div className="flex items-center">
-             <FaArrowTrendUp className="text-green-500 mr-1"/>
-                   <span  className="flex text-green-500 mr-1">${profit}% </span>
+
+
+           {
+            profit>0 ?  <FaArrowTrendUp className="text-green-500 mr-1"/> :  <FaArrowTrendDown className="text-red-500 mr-1"/>
+           }
+
+
+                {profit > 0 ?  <span  className="flex text-green-500 mr-1">{profit}% </span> 
+                :  <span  className="flex text-red-500 mr-1">{profit}% </span>
+}
                   </div>
              </div>
          <p className="text-gray-300"> last {date}</p>

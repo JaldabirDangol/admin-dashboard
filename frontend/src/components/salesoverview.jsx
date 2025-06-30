@@ -12,7 +12,7 @@ import {
 } from "recharts";
 const COLORS = ["#8884d8", "#82ca9d", "#ffc658", "#ff8042"];
 
-export const SalesOverview = ({ title, data1, data2, data3, data4 ,data5 }) => {
+export const SalesOverview = ({ title, data1, data2, data3, data4 ,data5,totalRevenue30Days }) => {
   const data = [
     { name: "Shoes", value: Number(data1) },
     { name: "Clothing", value: Number(data2) },
@@ -61,7 +61,7 @@ export const SalesOverview = ({ title, data1, data2, data3, data4 ,data5 }) => {
     <span className="w-4 h-4 rounded-full bg-indigo-500"></span>
     <div>
       <p>Shop</p>
-      <p className="text-gray-400">$40,200</p>
+      <p className="text-gray-400">${data[0].value}</p>
     </div>
   </div>
 
@@ -69,7 +69,7 @@ export const SalesOverview = ({ title, data1, data2, data3, data4 ,data5 }) => {
     <span className="w-4 h-4 rounded-full bg-purple-500"></span>
     <div>
       <p>Clothing</p>
-      <p className="text-gray-400">$35,150</p>
+      <p className="text-gray-400">${data[1].value}</p>
     </div>
   </div>
 
@@ -77,7 +77,7 @@ export const SalesOverview = ({ title, data1, data2, data3, data4 ,data5 }) => {
     <span className="w-4 h-4 rounded-full bg-green-500"></span>
     <div>
       <p>Sports</p>
-      <p className="text-gray-400">$15,100</p>
+      <p className="text-gray-400">${data[2].value}</p>
     </div>
   </div>
 
@@ -85,7 +85,7 @@ export const SalesOverview = ({ title, data1, data2, data3, data4 ,data5 }) => {
           <span className="w-4 h-4 rounded-full bg-cyan-500"></span>
          <div>
       <p>Shoes</p>
-      <p className="text-gray-400">$10,500</p>
+      <p className="text-gray-400">${data[3].value}</p>
         </div>
   </div>
 </div>
@@ -95,7 +95,7 @@ export const SalesOverview = ({ title, data1, data2, data3, data4 ,data5 }) => {
 
         <div className="pl-4">
             <span className="text-gray-200 text-xl">
-             Total revenue in 30 days is  ${`87,233`}
+             Total revenue in 30 days is  ${totalRevenue30Days}
             </span>
           </div>
 
