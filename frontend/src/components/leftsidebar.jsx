@@ -15,6 +15,7 @@ import { useState } from "react";
 import axios from "axios";
 import { backendurl } from "../../configurl.js";
 import { Toaster, toast } from 'sonner';
+import { useGetMe } from "../hooks/useGetMe.jsx";
 
 export const LeftSideBar = () => {
   const navigate = useNavigate();
@@ -57,9 +58,8 @@ export const LeftSideBar = () => {
   }
 ];
 
-const randomNames = ["Alice", "Bob", "Charlie", "Daisy", "Eve", "Frank", "Grace"];
-const randomName = randomNames[Math.floor(Math.random() * randomNames.length)];
- 
+const user = useGetMe()
+
  const handleSidebarItemClick = async(item) => {
   navigate(item.path);
   setSelecteditem(item.title)
@@ -78,6 +78,9 @@ const randomName = randomNames[Math.floor(Math.random() * randomNames.length)];
   }
 };
 
+if(user.loading1){
+  return <div>loading.......</div>
+}
  
   return (
     <div className="h-screen p-2 fixed overflow-y-auto scrollbar-hide bg-darkblue-400  w-[15%] ">
@@ -86,7 +89,7 @@ const randomName = randomNames[Math.floor(Math.random() * randomNames.length)];
           <AvatarImage src="https://i.pravatar.cc/40"/>
           <AvatarFallback> profile</AvatarFallback>
         </Avatar>
-         <span className="text-gray-100 pl-4 text-2xl hidden md:block"> {randomName}</span>
+         <span className="text-gray-100 pl-4 text-2xl hidden md:block"> {user?.user1?.username.slice(0,10)}</span>
       </div>
 
       <div className="flex flex-col gap-4 md:p-4">
